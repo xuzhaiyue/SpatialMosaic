@@ -33,12 +33,12 @@ def write_source(name,sheets):
  d=O/f'{name}_source_data';d.mkdir(exist_ok=True)
  for k,v in sheets.items():v.to_csv(d/f'{k}.csv',index=False)
 
-# ---------- HER2ST 外部 = Patient A–D（2026-10-31 QC：E–H 与 He2020 为同一批切片，E/F/G 在训练集；见 docs/worklog/2026-10-31_T10/QC_HER2ST_overlap.md） ----------
+# ---------- HER2ST 外部 = Patient A–D（E–H 与 He2020 为同一批切片，E/F/G 在训练集） ----------
 _ov=pd.read_csv(R/'results/t10/qc/HER2ST_He2020_overlap.csv')
 HER2ST_DUP=set(_ov.loc[_ov.duplicate,'HER2ST_sample']);assert len(HER2ST_DUP)==12
 def clean(df,col='sample'):return df[~df[col].isin(HER2ST_DUP)].copy()
 
-# ---------- v3 版式（2026-11-11，"顶刊"统一）：mm 画布、左对齐面板标题（字母 8 pt 粗体 + 标题 6.5 pt 常规）、细轴线、比例尺 ----------
+# ---------- 版式：mm 画布、左对齐面板标题（字母 8 pt 粗体 + 标题 6.5 pt 常规）、细轴线、比例尺 ----------
 mpl.rcParams.update({'axes.linewidth':.5,'xtick.major.width':.5,'ytick.major.width':.5,'xtick.major.size':2,'ytick.major.size':2,'xtick.major.pad':1.5,'ytick.major.pad':1.5,
  'axes.labelpad':2,'axes.edgecolor':INK,'xtick.color':INK,'ytick.color':INK,'axes.labelcolor':INK,'text.color':INK,'lines.solid_capstyle':'butt'})
 class Canvas:

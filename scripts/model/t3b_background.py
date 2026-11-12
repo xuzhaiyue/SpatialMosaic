@@ -1,4 +1,4 @@
-"""Freeze the shared uniquely mapped protein-coding gene universe without targets."""
+"""Define the shared uniquely mapped protein-coding gene universe (no targets used)."""
 import os
 os.environ.update(OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
 from pathlib import Path
@@ -28,7 +28,7 @@ for row in rna[rna.purpose.eq('CPTAC_primary_RNA')].itertuples():
  freq=collections.Counter(allids);ids={g for g in ids if freq[g]==1};coding=ids if coding is None else coding&ids
  records.append({'kind':row.cohort,'sample':row.file,'source':row.destination_file,'source_sha256':row.sha256,'gene_model':model,'n_unique_ids':len(ids),'gene_universe_sha256':digest(ids)})
 for row in pd.read_csv(R/'docs/worklog/2026-10-26_T1c_download/download_manifest.csv').to_dict('records'):
- # Locate only the already approved Xena expression matrices.
+ # Locate the Xena expression matrices.
  p=Path(row.get('downloaded_path',row.get('destination_file',row.get('verified_path',row.get('path','')))))
  if not p.name.endswith('HiSeqV2.gz'):continue
  with gzip.open(p,'rt') as f:

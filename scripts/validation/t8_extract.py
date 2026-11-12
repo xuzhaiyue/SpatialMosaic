@@ -31,7 +31,7 @@ def write_status(**payload: object) -> None:
 
 
 def gpu_conflicts() -> list[str]:
-    """Block on an inference script, not on every process that lives in the cellvit environment."""
+    """List other running GPU inference scripts; extraction waits while any are present."""
     text = subprocess.check_output(["ps", "-axo", "pid=,command="], text=True)
     hits: list[str] = []
     for line in text.splitlines():

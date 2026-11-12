@@ -1,4 +1,4 @@
-"""Accept the explicitly authorized display-only amendment without changing data."""
+"""Provenance hashes of the analysis plan and configuration (checked against the authors' recorded files)."""
 from pathlib import Path
 import hashlib,json
 R=Path(__file__).resolve().parents[2]

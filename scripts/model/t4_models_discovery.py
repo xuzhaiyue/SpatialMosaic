@@ -15,7 +15,7 @@ def corr(a,b):return float(spearmanr(a,b).statistic) if len(a)>=3 and np.ptp(a)>
 def load(rows):
  xs=[];ys=[];frames=[]
  for row in rows.itertuples():
-  # These target archives were generated locally by this task; legacy spot IDs use object dtype.
+  # These target archives were generated locally; legacy spot IDs use object dtype.
   with np.load(row.targets,allow_pickle=True) as target,h5py.File(row.features) as f:
    assert f['done'][:].all() and np.array_equal(f['spot_ids'].asstr()[:],target['spot_ids']) and np.array_equal(f['coordinates'][:],target['coordinates']);x=f['features'][:];y=target['scores'];assert np.isfinite(x).all() and np.isfinite(y).all();xs.append(x);ys.append(y);xy=target['coordinates'];frames.append(pd.DataFrame({'cohort':row.cohort,'patient_key':row.patient_key,'patient':row.patient,'sample':row.sample,'spot_id':target['spot_ids'],'split':row.split,'x':xy[:,0],'y':xy[:,1]}))
  return np.vstack(xs),np.vstack(ys),pd.concat(frames,ignore_index=True)

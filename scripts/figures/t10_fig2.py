@@ -10,8 +10,7 @@ EX='SPA147'  # T5 按"实测 Moran's I 最大"规则选出的 HER2ST 示例（Pa
 sp=pd.read_parquet(D/'st_spot_predictions.parquet');sec=clean(pd.read_csv(D/'st_section_rho.csv'));meta=manifest().set_index('sample')
 held=sec[sec.split.isin(['test','external'])]
 pat=held.groupby(['cohort','patient','program'],as_index=False).agg(rho_main=('rho_main','mean'),rho_T4=('rho_T4','mean'),sections=('sample','size'))
-# v3（2026-11-11）："顶刊"版式：左对齐面板标题，去掉居中粗体标题 + 灰色副标题；队列名移到轴下；H&E 与图块加比例尺；d 用两级列标题、四个主程序以颜色标出。
-# v2.3 存 archive_Fig2_20261111c/，v2.2 存 archive_Fig2_20261111b/，v1 存 archive_Fig2_20261111/
+# 版式：左对齐面板标题；队列名在轴下；H&E 与图块加比例尺；d 用两级列标题、四个主程序以颜色标出。
 C=Canvas(180,170);A=C.ax
 
 # ---------- a 示例切片 ----------
@@ -80,7 +79,7 @@ leg_pair(1,4.4,False,'ST-only → dual-scale, per patient');leg_pair(50,4.4,True
 C.head(2,109,'c','Held-out breast tiles with the highest and lowest predicted scores')
 # 留出乳腺 spot（He2020 测试 + HER2ST A–D），按主模型预测排序；每程序最高 / 最低各 4 个，每名患者每端最多 2 个
 hs=clean(sp.merge(meta[['cohort','patient','split','image','mpp']].reset_index(),on='sample'));hs=hs[hs.cohort.isin(['He2020','HER2ST'])&hs.split.isin(['test','external'])].copy()
-# v2.1：排除无组织纹理的图块（玻片背景；128 µm 图块灰度标准差 < 0.02，scripts 内联计算见 results/t10/qc/heldout_spot_tissue_metrics.csv）。
+# 排除无组织纹理的图块（玻片背景；128 µm 图块灰度标准差 < 0.02，scripts 内联计算见 results/t10/qc/heldout_spot_tissue_metrics.csv）。
 # 留出 38,364 个 spot 中仅 5 个，去掉后切片内 ρ 变化 ≤ 0.013，故只用于画廊选例，主分析不变。
 tq=pd.read_csv(O/'qc/heldout_spot_tissue_metrics.csv');hs=hs.merge(tq[['sample','spot_id','gray_sd']],on=['sample','spot_id'],how='left');assert hs.gray_sd.notna().all();hs=hs[hs.gray_sd>=.02].copy()
 for k in SK:hs[f'obs_pct_{k}']=hs.groupby('sample')[f'obs_{k}'].rank(pct=True)

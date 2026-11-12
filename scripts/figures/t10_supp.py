@@ -1,7 +1,7 @@
-"""T10 补充图（2026-10-31 用户同意精简为 4 张 + 1 个附件；v1 的 9 张版见 t10_supp_v1_9figs.py 与 results/t10/supp_v1_9figs/）。
+"""T10 补充图（4 张 + 1 个附件）。
 S1 数据与标签质控（队列、HER2ST 重复剔除、PAM50 标签一致性与官方标签外部 ROC）；S2 骨干对比；
 S3 读出上限与 HEST 外部验证；S4 临床稳健性（设计审查、采样缺口）；SupplementaryData1 全部留出 ST 切片实测 vs 预测（多页 PDF）。
-空间原型按用户决定删除。HER2ST 一律 A–D。用法：python t10_supp.py [S1 S2 S3 S4 SD1]（缺省全部）。"""
+HER2ST 一律 A–D。用法：python t10_supp.py [S1 S2 S3 S4 SD1]（缺省全部）。"""
 from t10_common import *
 import sys,h5py,json
 from PIL import Image
@@ -26,8 +26,8 @@ def table(ax,df,cols,widths,fs=5.6,scale=(1,1.2)):
  ax.set_axis_off()
 
 DARKP='#3E2766'  # 与 Fig 5 共定位主色一致
-# ---------- v2 版式（2026-11-11）：与 Fig 5 v5 同一规则——字号只用三档（面板字母 8 pt 粗体 / 面板标题 7 pt / 其余 6 pt），宽 180 mm、高 ≤ 170 mm；
-# 表格改为三线表（不画格子）；图内长注释移入图注。v1 存 results/t10/archive_Supp_20261111/ ----------
+# ---------- 版式：字号只用三档（面板字母 8 pt 粗体 / 面板标题 7 pt / 其余 6 pt），宽 180 mm、高 ≤ 170 mm；
+# 表格为三线表；图内长注释放在图注。 ----------
 FS,TT=6,7
 def H(C,x,y,l,t):C.head(x,y,l,t,fs=TT)
 def tk(a):ticks(a,FS,FS)
@@ -136,7 +136,7 @@ def S2():
 # ---------------- S3 读出上限与 HEST 外部 ----------------
 SM3=['TENX39','TENX53','TENX68','TENX161','TENX162','TENX180']
 def S3d_data(s):
- """d 面板每张切片的实测 / 预测图。首次需挂载 INTENSO_BIG（只读）；结果缓存到 results/t10/data/S3d_cache/，以后改版不必再挂盘。"""
+ """d 面板每张切片的实测 / 预测图。首次读取 HEST 原始数据；结果缓存到 results/t10/data/S3d_cache/。"""
  cf=D/'S3d_cache'/f'{s}.npz'
  if cf.exists():z=np.load(cf,allow_pickle=True);return {k:z[k] for k in z.files}
  assert HEST.exists(),f'{HEST} 未挂载，且无缓存 {cf}'

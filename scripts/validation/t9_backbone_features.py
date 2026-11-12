@@ -16,8 +16,7 @@ DIM={'densenet121':1024,'conch':512}
 def stamp():return datetime.datetime.now().astimezone().isoformat()
 
 def busy_gpu():
- # 让路规则（比 T4 更保守）：只要 SR 支线流水线或任何 CellViT/ray 进程存在就不上 MPS，不看 CPU 占用
- # （CellViT 的计算在 ray 子进程里，主进程 %cpu 常显示 0，按 CPU 判断会漏判）
+ # 其他 GPU 推理进程存在时不使用 MPS
  rows=[]
  for line in subprocess.check_output(['ps','-axo','pid=,%cpu=,command='],text=True).splitlines():
   try:pid,cpu,cmd=line.strip().split(None,2)

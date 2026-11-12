@@ -1,5 +1,4 @@
-"""T10 补充核查（2026-11-01）：官方 UNI2-h patch 竖条状采样缺口是否制造了 E2F–IFNγ 共定位关联。
-起因：Fig 5c 重选病例时发现共定位最高 12 例中 10 例为竖条采样、最低 12 例中 3 例；此前的列填充率 / 包围盒填充率未捕捉这种模式。
+"""T10 补充核查：官方 UNI2-h patch 竖条状采样缺口是否制造了 E2F–IFNγ 共定位关联。
 竖条指数 = 相邻两列 patch 数相对差 > 0.5 的列对比例（每张切片；患者取 patch 数加权均值）。24 例上 ≤0.05 与 ≥0.09 明显两群，规整阈值预设为 < 0.05。
 检验：竖条指数与共定位的相关；Cox（同 Fig 5b 基础协变量）加入竖条指数；只在规整切片患者中重估共定位 HR。"""
 from t10_common import *
@@ -12,7 +11,7 @@ def stripe(path):
  gx=(xy[:,0]//st).astype(int);c=np.bincount(gx-gx.min()).astype(float);a,b=c[:-1],c[1:];m=np.maximum(a,b);ok=m>0
  return float(np.mean(np.abs(a-b)[ok]/m[ok]>.5)) if ok.any() else np.nan,len(xy)
 def value_stripe(path,cols=(0,1),k=7):
- """预测值竖条指数（2026-11-08，Fig 5c 选例用）：各程序片内百分位减去 k×k 局部均值后，
+ """预测值竖条指数（Fig 5d 选例用）：各程序片内百分位减去 k×k 局部均值后，
  残差的列均值方差 / 行均值方差（只计 ≥10 个 patch 的列/行），取所给程序的最大值。采样完整但预测值呈竖条带时升高。"""
  from scipy.ndimage import uniform_filter
  with h5py.File(path) as f:xy=f['coords_top_left'][:];pr=f['predicted'][:];st=int(f.attrs['grid_step'])

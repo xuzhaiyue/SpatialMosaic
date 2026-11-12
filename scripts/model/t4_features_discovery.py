@@ -1,4 +1,4 @@
-"""Resumable frozen ST extraction. MPS is used exclusively after GPU preflight."""
+"""Resumable UNI2-h feature extraction for ST spots on MPS."""
 import os
 os.environ.update(OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2',MKL_NUM_THREADS='2',HF_HUB_OFFLINE='1')
 import json,time,hashlib,subprocess,shlex,fcntl,datetime

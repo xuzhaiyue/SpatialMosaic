@@ -19,7 +19,7 @@ MEAN=torch.tensor([.485,.456,.406]).view(1,3,1,1);STD=torch.tensor([.229,.224,.2
 def stamp():return datetime.datetime.now().astimezone().isoformat()
 SHARE=dict(on=False,every=5,seconds=1.0)
 def wait_gpu(status,what):
- # --share-gpu（2026-10-30 用户同意）：不再等 SR09/CellViT 让出 MPS，改为与之共享，并每 5 批暂停 1 s 压低占用；只影响速度，不影响结果
+ # --share-gpu：与其他进程共享 MPS，每 5 批暂停 1 s；只影响速度，不影响结果
  if SHARE['on']:status.write_text(json.dumps({'date':stamp(),'phase':'training_shared_gpu','at':what,'others_on_gpu':len(busy_gpu())}));time.sleep(SHARE['seconds']);return
  while busy_gpu():status.write_text(json.dumps({'date':stamp(),'phase':'paused_for_other_gpu','at':what}));time.sleep(30)
 

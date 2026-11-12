@@ -1,4 +1,4 @@
-"""Predict with the frozen breast model and draw the T8-1 comparison figures."""
+"""Predict with the trained breast model and draw the T8-1 comparison figures."""
 from __future__ import annotations
 
 import hashlib

@@ -9,7 +9,7 @@ stp=st.groupby(['cohort','patient_key','program','candidate'],as_index=False).rh
 bk=pd.read_csv(R/'results/t7/bulk_correlations_all_candidates.csv')
 # 自检：主模型 bulk ρ 与 T6 报告一致（乳腺 λ=0.5 = T6）
 assert abs(bk[(bk.cohort=='TCGA-BRCA')&(bk.candidate=='lambda_0.5')&(bk.program==P[0])].rho.iloc[0]-0.680)<5e-4
-# v3（2026-11-12）：与 Fig 5 v5 / 补充图同一规则——字号三档（面板字母 8 pt 粗体 / 标题 7 pt / 其余 6 pt），同行面板等高，标题左对齐。v2 存 results/t10/archive_Fig134_20261112/
+# 字号三档（面板字母 8 pt 粗体 / 标题 7 pt / 其余 6 pt），同行面板等高，标题左对齐
 C=Canvas(180,137);A=C.ax;FS,TT=6,7
 def H(x,y,l,t):C.head(x,y,l,t,fs=TT)
 def tk(a):ticks(a,FS,FS)

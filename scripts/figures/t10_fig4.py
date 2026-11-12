@@ -11,7 +11,7 @@ cov=pd.read_csv(R/'results/t7/official_patch_tissue_coverage.csv');thumb=pd.read
 # 选例规则（预设、不看图）：T7 固定随机覆盖核查集中，每癌种 patch ≥ 5000、有缩略图、覆盖率最高的 2 张
 cand=cov[cov.purposes.str.contains('random_coverage20')&(cov.patches>=5000)&cov.slide.isin(thumb.index)]
 cases=pd.concat([g.sort_values('coverage',ascending=False).head(2) for _,g in cand.groupby('cohort')]).sort_values(['cohort','coverage'],ascending=[True,False])
-# v3（2026-11-12）：与 Fig 5 v5 同一规则——字号三档（8 / 7 / 6 pt），标题左对齐，2 mm 比例尺。v2 存 results/t10/archive_Fig134_20261112/
+# 字号三档（8 / 7 / 6 pt），标题左对齐，2 mm 比例尺
 C=Canvas(180,170);A=C.ax;fig=C.fig;FS,TT=6,7
 def H(x,y,l,t):C.head(x,y,l,t,fs=TT)
 def tk(a):ticks(a,FS,FS)

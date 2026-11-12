@@ -32,5 +32,7 @@ export PYTHONPATH=$(ls -d "$PWD"/scripts/*/ | tr '\n' :)
 ## Environments
 `env/hemorph.yml` covers all analyses. `env/smbackbone.yml` covers the backbone comparison. R 4.5.2 with genefu 2.42.0 runs the PAM50 calls (`env/R_sessionInfo.txt`). Developed on Apple silicon with PyTorch MPS.
 
+The T4 feature and model scripts verify SHA-256 hashes of the authors' analysis plan and configuration (`common/t4_display_provenance.py`); when re-running from scratch, record new hashes or skip this check.
+
 ## Licence
 CC0 1.0 Universal.

@@ -1,11 +1,10 @@
 """T10 Fig 5：空间特征与预后，以及它在形态上是什么（TCGA，交叉拟合图）。
 a 单特征 Cox 森林图（乳腺 / 肾各 18 项，调整年龄、二值分期、四程序均值）；
-b E2F–IFNγ 共定位稳健性（逐行移植 results/t8_claude_diag/d3.py，只改为写表，模型不变）；
-c 共定位三分位 KM（v5 新增，未调整、描述性）；d 共定位最高 / 最低病例（H&E + E2F / IFNγ 全片图），按排名依次取、跳过无 H&E 者及竖条采样者（竖条指数 ≥ 0.05，t10_sampling_stripes.py；v2，2026-11-01：v1 选出的 3 例呈竖条状采样缺口）
-  及预测值竖条者（E2F / IFNγ 预测值竖条指数 ≥ 3，value_stripe；v3，2026-11-08：v2 的低端第 1 例 TCGA-AC-A2QH 采样完整但 E2F 预测值呈竖条带，24 例中唯一 > 3，次高 2.73）；
+b E2F–IFNγ 共定位稳健性；
+c 共定位三分位 KM（未调整、描述性）；d 共定位最高 / 最低病例（H&E + E2F / IFNγ 全片图），按排名依次取、跳过无 H&E 者及竖条采样者（竖条指数 ≥ 0.05，t10_sampling_stripes.py）
+  及预测值竖条者（E2F / IFNγ 预测值竖条指数 ≥ 3，value_stripe；24 例中仅 1 例 > 3，次高 2.73）；
 e 共定位与 Saltz 影像 TIL 密度、TIL 模式。
-全片图空白为官方未采样 patch（部分切片呈竖条状）；b 中加入采样规整度敏感性分析。
-T7 代表病例对（原计划 d）因官方采样大块空缺不适合作主图，移到补充材料。"""
+全片图空白为官方未采样 patch（部分切片呈竖条状）；b 中加入采样规整度敏感性分析。"""
 from t10_common import *
 import h5py
 from PIL import Image
@@ -24,7 +23,7 @@ base=['age','stage_high']+MEANS;dt=d[d.til_percentage.notna()]
 fit(d,base+[F],label='T7 model');fit(dt,base+[F],label='Saltz-matched subset');fit(dt,base+['logtil',F],label='+ log TIL%')
 dp=dt.copy();dp=pd.concat([dp,pd.get_dummies(dp.til_pattern4,prefix='pat',drop_first=True).astype(float)],axis=1);pc=[c for c in dp.columns if c.startswith('pat_')]
 fit(dp,base+['logtil']+pc+[F],label='+ log TIL% + TIL pattern');fit(d,base+[F],strata='tss',label='stratified by tissue source site');fit(dt,base+['logtil',F],strata='tss',label='+ log TIL%, stratified by site')
-# 官方采样规整度（2026-10-31 出图时发现部分全片图呈竖条状）：列填充率与包围盒填充率；只在有 Saltz 匹配的患者上计算
+# 官方采样规整度（部分全片图呈竖条状）：列填充率与包围盒填充率；只在有 Saltz 匹配的患者上计算
 SQ=R/'results/t10/qc/TCGA_BRCA_sampling_regularity.csv'
 if not SQ.exists():
  rows=[]
@@ -34,13 +33,11 @@ if not SQ.exists():
  pd.DataFrame(rows).to_csv(SQ,index=False)
 ds=dt.merge(pd.read_csv(SQ)[['patient_id','colfill','fill']],on='patient_id');fit(ds,base+['colfill','fill',F],label='+ sampling regularity')
 rob=pd.DataFrame(rob);rob.to_csv(D/'Fig5b_robustness.csv',index=False)
-# 自检：与 t8_claude_diag/README.md 一致
+# 自检：与先前诊断结果一致
 assert abs(rob.set_index('model').HR['+ sampling regularity']-.795)<6e-4
 for lab,hr in [('T7 model',.745),('+ log TIL%',.850),('stratified by tissue source site',.779),('+ log TIL%, stratified by site',.880)]:assert abs(rob.set_index('model').HR[lab]-hr)<6e-4,(lab,rob)
 
-# v5.1（2026-11-11）：字号只用三档（面板字母 8 pt 粗体 / 面板标题 7 pt / 其余全部 6 pt）；上下两行等高（各约 80 mm）；
-# b 下方注释移入图注。v5：a 两癌合并为分组森林图；c 新增共定位三分位 KM（未调整，描述性）+ 风险人数表；d 病例改为 E2F × IFNγ 双变量图；e 散点加分箱中位数线。
-# v4 存 archive_Fig5_20261111b/，v3 存 archive_Fig5_20261111/
+# 字号三档（面板字母 8 pt 粗体 / 面板标题 7 pt / 其余 6 pt）；上下两行等高（各约 80 mm）
 from statsmodels.duration.survfunc import SurvfuncRight,survdiff
 C=Canvas(180,170);A=C.ax;FS=6;TT=7
 mpl.rcParams['legend.fontsize']=FS
@@ -92,10 +89,10 @@ head(90,5,'b','Co-localization HR in sensitivity analyses, TCGA-BRCA')
 sub=pd.read_csv(D/'clinical_review_subtype.csv');lrt=pd.read_csv(D/'clinical_review_LRT.csv');chs=pd.read_csv(D/'clinical_review_choices.csv')
 sel=chs[(chs.set=='TCGA-BRCA')&chs.model.str.startswith('M3')];nsel=int((sel.choice==F).sum())
 sb=sub[sub.subtype.isin(['Basal','Her2','LumA','LumB'])].rename(columns={'subtype':'model'})
-# 采样竖条核查（t10_sampling_stripes.py）替代 v1 的列填充率一行
+# 采样竖条核查（t10_sampling_stripes.py）
 st_=pd.read_csv(D/'sampling_stripes_cox.csv').set_index('model').loc[['+ stripe index','regular sampling only (stripe < 0.05)']].reset_index();st_['model']=['+ sampling stripe index','regular-sampling slides only']
 rob_=pd.concat([rob[rob.model.ne('+ sampling regularity')],st_],ignore_index=True);rob_['model']=rob_.model.replace({'T7 model':'Primary model'})
-# E2F 均值三分位内（t10_coloc_x_e2f.py，2026-11-08）
+# E2F 均值三分位内（t10_coloc_x_e2f.py）
 et=pd.read_csv(D/'coloc_by_E2F_tertile.csv');et=et[et.cohort.eq('TCGA-BRCA')].copy();et['model']=et.E2F_tertile.str.capitalize();ix=pd.read_csv(D/'coloc_x_E2F_interaction.csv').set_index(['cohort','modifier']).p
 cols=['model','n','events','HR','CI_low','CI_high','p'];bl=[('Adjustment and sampling',rob_[cols]),('Within PAM50 subtype',sb[cols]),('Within E2F-mean tertile',et[cols])]
 ys,heads,seps,yend=grouped_rows([(t,b.model.tolist()) for t,b in bl]);rb=pd.concat([b.assign(block=t) for t,b in bl],ignore_index=True);rb['y']=ys
@@ -154,7 +151,7 @@ for grp in ['High','Low']:
   scalebar(b,2000/128,'2 mm',fs=FS,lw=.8,out=True)  # 网格单元 = 名义 128 µm patch
   C.text(DX0,y0+IH+2.4,r.patient_id.replace('TCGA-',''),fontsize=FS,va='baseline');C.text(DX0+IW,y0+IH+2.4,f'ρ = {getattr(r,"E2F__IFNg__coloc"):.2f}'.replace('-','−'),fontsize=FS,va='baseline',ha='right')
   crows.append(dict(group=grp,rank=r.rank,sampling_stripe_index=r.stripe,value_stripe_index=r.vstripe,patient_id=r.patient_id,slide=r.slide,coloc=getattr(r,'E2F__IFNg__coloc'),patches=r.n_patches))
-# 双变量色键：8 mm 方块 + 四色样块（v5.1 的 9 mm 方块 + 宽间距样块 + 说明文字太大，v5.2 只留 6 mm 方块又看不懂，取中）
+# 双变量色键：8 mm 方块 + 四色样块
 KQ=A(118.5,R2+2.5,8,8);uu,vv=np.meshgrid(np.linspace(0,1,64),np.linspace(0,1,64));KQ.imshow(bivar(uu,vv),origin='lower',extent=[0,1,0,1]);KQ.set_xticks([]);KQ.set_yticks([])
 for s_ in KQ.spines.values():s_.set_visible(False)
 KQ.text(.5,-.08,'E2F →',transform=KQ.transAxes,ha='center',va='top',fontsize=FS);KQ.text(-.08,.5,'IFNγ →',transform=KQ.transAxes,ha='right',va='center',rotation=90,fontsize=FS)

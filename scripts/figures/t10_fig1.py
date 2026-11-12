@@ -1,7 +1,6 @@
-"""T10 Fig 1 v2（2026-11-11）：研究设计与计算流程总览，版式与图形摘要 v3 统一（浅色底带、无黑框、字号四档、小写面板字母）。
+"""T10 Fig 1：研究设计与计算流程总览。
 所有数字从结果表读取并写入 Fig1_source_data/numbers.csv；示意中的 H&E、spot、程序图均为本项目真实图像。
-相对 v1 的更正：损失写作 λ·L_ST + (1−λ)·L_bulk（λ = 1 为纯 ST，与 Methods 一致；v1 写反）；空间特征改为实际的四类
-（Moran's I、高分比例、局部熵、共定位；均值只作校正协变量，不在 18 个特征内）；programme 拼写与正文一致。v1 存于 results/t10/archive_Fig1_20261111/。"""
+损失为 λ·L_ST + (1−λ)·L_bulk（λ = 1 为纯 ST）；空间特征四类：Moran's I、高分比例、局部熵、共定位（均值只作校正协变量，不在 18 个特征内）。"""
 from t10_common import *
 import openslide,h5py
 from PIL import Image
@@ -25,10 +24,10 @@ N+=[('total slides',int(wc.slides.sum()),'same'),('total patches',int(wc.patches
 num=dict((k,v) for k,v,_ in N)
 def pfi(co):n,e=num[co+' PFI n/events'].split('/');return f'{int(n):,} pts, {int(e)} events'
 
-# ---------- 画布（mm）与样式：同图形摘要 v3 ----------
+# ---------- 画布（mm）与样式 ----------
 Wd,Ht=180,170;fig=plt.figure(figsize=(Wd*MM,Ht*MM));ax=fig.add_axes([0,0,1,1]);ax.set_xlim(0,Wd);ax.set_ylim(Ht,0);ax.set_axis_off()
 ST_C,BK_C,MD_C,HL='#3d6b33','#8a5a00','#2C5D9A','#a5481b'
-# v3（2026-11-12）：字号统一三档——面板字母 8 pt 粗体、面板标题 7 pt、其余一律 6 pt（β 符号按 7 pt）。v2 存 results/t10/archive_Fig134_20261112/
+# 字号三档：面板字母 8 pt 粗体、面板标题 7 pt、其余 6 pt（β 符号 7 pt）
 def txt(x,y,s,size=6,**k):size=8 if size>=8 and k.get('fontweight')=='bold' and len(s)==1 else (7 if size>=7 else 6);return ax.text(x,y,s,fontsize=size,ha=k.pop('ha','center'),va=k.pop('va','center'),zorder=k.pop('zorder',8),**k)
 def arrow(x0,y0,x1,y1,c='#444444',lw=.9):ax.annotate('',xy=(x1,y1),xytext=(x0,y0),arrowprops=dict(arrowstyle='-|>,head_length=.4,head_width=.22',color=c,lw=lw,shrinkA=0,shrinkB=0),zorder=7)
 def img(a,x,y,w,h=None,z=4,frame=None):
