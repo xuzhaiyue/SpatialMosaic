@@ -6,7 +6,7 @@ import json,datetime,hashlib,itertools
 import numpy as np,pandas as pd
 from scipy.stats import spearmanr,rankdata
 from t5_common import graph,adjacency,moran,local_entropy,coloc
-R=Path(os.environ.get('PROJECT_ROOT',Path(__file__).resolve().parents[1]));C=json.loads((R/'config/t6.json').read_text());O=R/'results/t6';W=R/'docs/worklog/2026-10-27_T6';E=Path(C['output_root']);E.mkdir(parents=True,exist_ok=True);P=C['programs'];S=C['short'];PAIRS=list(itertools.combinations(range(4),2));MEANS=[s+'__mean' for s in S];SPACE=[s+'__'+k for k in ['moran','high_fraction','entropy'] for s in S]+[S[a]+'__'+S[b]+'__coloc' for a,b in PAIRS];FEATURES=MEANS+SPACE
+R=Path(os.environ.get('PROJECT_ROOT',Path(__file__).resolve().parents[2]));C=json.loads((R/'config/t6.json').read_text());O=R/'results/t6';W=R/'docs/worklog/2026-10-27_T6';E=Path(C['output_root']);E.mkdir(parents=True,exist_ok=True);P=C['programs'];S=C['short'];PAIRS=list(itertools.combinations(range(4),2));MEANS=[s+'__mean' for s in S];SPACE=[s+'__'+k for k in ['moran','high_fraction','entropy'] for s in S]+[S[a]+'__'+S[b]+'__coloc' for a,b in PAIRS];FEATURES=MEANS+SPACE
 
 def stamp():return datetime.datetime.now().astimezone().isoformat()
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()

@@ -7,7 +7,7 @@ import numpy as np,pandas as pd,h5py,torch,openslide
 from PIL import Image
 from uni2h_inference import load_encoder,prepare
 from t4_display_provenance import allowed_hashes
-R=Path(__file__).resolve().parents[1];W=R/'docs/worklog/2026-10-26_T4';O=R/'results/t4'
+R=Path(__file__).resolve().parents[2];W=R/'docs/worklog/2026-10-26_T4';O=R/'results/t4'
 def stamp():return datetime.datetime.now().astimezone().isoformat()
 def gpu_snapshot():
  rows=[]

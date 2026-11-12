@@ -4,7 +4,7 @@ os.environ.update(OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
 from pathlib import Path
 import json,gzip,hashlib,collections
 import pandas as pd,anndata as ad
-R=Path(__file__).resolve().parents[1];O=R/'results/t3b';W=R/'docs/worklog/2026-10-26_T3b'
+R=Path(__file__).resolve().parents[2];O=R/'results/t3b';W=R/'docs/worklog/2026-10-26_T3b'
 map_path=R/'references/2026-10-23_STPath_PathPrism/STPath/code/utils_data/symbol2ensembl.json';mapping=json.loads(map_path.read_text())
 def digest(seq):return hashlib.sha256(('\n'.join(sorted(seq))+'\n').encode()).hexdigest()
 def unique_ids(names,raw=None):

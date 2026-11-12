@@ -5,7 +5,7 @@ from pathlib import Path
 import pandas as pd,numpy as np,json,csv,re,zipfile,xml.etree.ElementTree as ET
 import matplotlib.pyplot as plt
 from scipy.stats import spearmanr
-R=Path(__file__).resolve().parents[1];O=R/'results/t8_1b';W=R/'docs/worklog/2026-10-28_T8-1b';D=Path('/Volumes/INTENSO/SpatialMosaic_data/03_references/saltz_2018');F=O/'figures';score='E2F__IFNg__coloc'
+R=Path(__file__).resolve().parents[2];O=R/'results/t8_1b';W=R/'docs/worklog/2026-10-28_T8-1b';D=Path('/Volumes/INTENSO/SpatialMosaic_data/03_references/saltz_2018');F=O/'figures';score='E2F__IFNg__coloc'
 # Read only identity, image TIL and author pattern fields from the integrated workbook.
 ns={'m':'http://schemas.openxmlformats.org/spreadsheetml/2006/main'};rows=[];allowed={'A','B','M','O','AD','AE','AF'}
 with zipfile.ZipFile(D/'TILMap_TableS1.xlsx') as z:

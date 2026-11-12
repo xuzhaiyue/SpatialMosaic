@@ -18,7 +18,7 @@ from pathlib import Path
 import numpy as np
 from scipy.stats import rankdata
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 HEST = Path("/Volumes/INTENSO_BIG/HEST1k")
 OUT = ROOT / "results" / "t8"
 WORK = ROOT / "docs" / "worklog" / "2026-10-27_T8"

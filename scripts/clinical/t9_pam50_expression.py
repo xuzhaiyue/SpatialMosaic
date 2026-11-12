@@ -3,7 +3,7 @@ import os
 os.environ.update(OMP_NUM_THREADS='2',OPENBLAS_NUM_THREADS='2')
 from pathlib import Path
 import numpy as np,pandas as pd
-R=Path(__file__).resolve().parents[1];O=R/'results/t9/pam50';O.mkdir(parents=True,exist_ok=True)
+R=Path(__file__).resolve().parents[2];O=R/'results/t9/pam50';O.mkdir(parents=True,exist_ok=True)
 REF=Path('/Volumes/INTENSO/SpatialMosaic_data/03_references/tcga_endpoints_rna')
 # genefu pam50 centroid 名称（旧符号）；表达表里的现行符号 -> 质心名
 PAM50=['ACTR3B','ANLN','BAG1','BCL2','BIRC5','BLVRA','CCNB1','CCNE1','CDC20','CDC6','CDCA1','CDH3','CENPF','CEP55','CXXC5','EGFR','ERBB2','ESR1','EXO1','FGFR4','FOXA1','FOXC1','GPR160','GRB7','KIF2C','KNTC2','KRT14','KRT17','KRT5','MAPT','MDM2','MELK','MIA','MKI67','MLPH','MMP11','MYBL2','MYC','NAT1','ORC6L','PGR','PHGDH','PTTG1','RRM2','SFRP1','SLC39A6','TMEM45B','TYMS','UBE2C','UBE2T']

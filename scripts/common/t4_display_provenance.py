@@ -1,7 +1,7 @@
 """Accept the explicitly authorized display-only amendment without changing data."""
 from pathlib import Path
 import hashlib,json
-R=Path(__file__).resolve().parents[1]
+R=Path(__file__).resolve().parents[2]
 def allowed_hashes():
  path=R/'docs/worklog/2026-10-26_T4/display_A1/amendment.json'
  if not path.exists():

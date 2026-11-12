@@ -8,7 +8,7 @@ from scipy.stats import spearmanr
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
 from t4_display_provenance import allowed_hashes
-R=Path(__file__).resolve().parents[1];W=R/'docs/worklog/2026-10-26_T4';O=R/'results/t4'
+R=Path(__file__).resolve().parents[2];W=R/'docs/worklog/2026-10-26_T4';O=R/'results/t4'
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest()
 def corr(a,b):return float(spearmanr(a,b).statistic) if len(a)>=3 and np.ptp(a)>0 and np.ptp(b)>0 else np.nan
 

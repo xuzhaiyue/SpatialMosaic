@@ -6,7 +6,7 @@ from pathlib import Path
 import json,datetime
 import numpy as np,pandas as pd,joblib
 from scipy.stats import spearmanr
-R=Path(__file__).resolve().parents[1];O=R/'results/t10';D=O/'data';D.mkdir(parents=True,exist_ok=True)
+R=Path(__file__).resolve().parents[2];O=R/'results/t10';D=O/'data';D.mkdir(parents=True,exist_ok=True)
 E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts');E10=E/'t10';E10.mkdir(exist_ok=True)
 P=['E2F_TARGETS','INTERFERON_GAMMA_RESPONSE','HYPOXIA','EPITHELIAL_MESENCHYMAL_TRANSITION'];S=['E2F','IFNγ','Hypoxia','EMT'];SK=['E2F','IFNg','Hypoxia','EMT']
 MAIN={'TCGA-BRCA':'lambda_0.5','TCGA-KIRC':'lambda_0.75'};ST2TCGA={'He2020':'TCGA-BRCA','HER2ST':'TCGA-BRCA','Meylan_ccRCC':'TCGA-KIRC'}

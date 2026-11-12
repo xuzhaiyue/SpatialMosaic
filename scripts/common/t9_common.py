@@ -5,7 +5,7 @@ from pathlib import Path
 import json
 import numpy as np,pandas as pd
 from scipy.stats import rankdata
-R=Path(__file__).resolve().parents[1];O=R/'results/t9/atlas';O.mkdir(parents=True,exist_ok=True)
+R=Path(__file__).resolve().parents[2];O=R/'results/t9/atlas';O.mkdir(parents=True,exist_ok=True)
 E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9');E.mkdir(parents=True,exist_ok=True)
 MAX_RANK=1500
 BG=(R/'results/t3b/protein_coding_background.txt').read_text().split();BGSET=set(BG)

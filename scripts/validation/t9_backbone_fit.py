@@ -10,7 +10,7 @@ import numpy as np,pandas as pd,h5py
 from scipy.stats import spearmanr
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import Ridge
-R=Path(__file__).resolve().parents[1];O=R/'results/t9/backbones';E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9/backbones')
+R=Path(__file__).resolve().parents[2];O=R/'results/t9/backbones';E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9/backbones')
 def corr(a,b):return float(spearmanr(a,b).statistic) if len(a)>=3 and np.ptp(a)>0 and np.ptp(b)>0 else np.nan
 
 def feature_path(row,backbone):return Path(row.features) if backbone=='UNI2h' else E/backbone/'features'/(row.sample+'.h5')

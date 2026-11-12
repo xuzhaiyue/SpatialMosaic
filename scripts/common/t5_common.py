@@ -6,7 +6,7 @@ import json,itertools,hashlib,datetime
 import numpy as np,pandas as pd
 from scipy import sparse
 from scipy.stats import rankdata
-R=Path(os.environ.get('PROJECT_ROOT',Path(__file__).resolve().parents[1]));C=json.loads((R/'config/t5.json').read_text());O=R/'results/t5';W=R/'docs/worklog/2026-10-27_T5';E=Path(C['output_root']);E.mkdir(parents=True,exist_ok=True);P=C['programs'];S=C['short'];PAIRS=list(itertools.combinations(range(4),2));MEANS=[s+'__mean' for s in S];SPACE=[s+'__'+k for k in ['moran','high_fraction','entropy'] for s in S]+[S[a]+'__'+S[b]+'__coloc' for a,b in PAIRS];FEATURES=MEANS+SPACE
+R=Path(os.environ.get('PROJECT_ROOT',Path(__file__).resolve().parents[2]));C=json.loads((R/'config/t5.json').read_text());O=R/'results/t5';W=R/'docs/worklog/2026-10-27_T5';E=Path(C['output_root']);E.mkdir(parents=True,exist_ok=True);P=C['programs'];S=C['short'];PAIRS=list(itertools.combinations(range(4),2));MEANS=[s+'__mean' for s in S];SPACE=[s+'__'+k for k in ['moran','high_fraction','entropy'] for s in S]+[S[a]+'__'+S[b]+'__coloc' for a,b in PAIRS];FEATURES=MEANS+SPACE
 
 def sha(path):return hashlib.sha256(Path(path).read_bytes()).hexdigest()
 def stamp():return datetime.datetime.now().astimezone().isoformat()

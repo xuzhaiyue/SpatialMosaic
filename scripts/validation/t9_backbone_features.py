@@ -10,7 +10,7 @@ from pathlib import Path
 import numpy as np,pandas as pd,h5py,torch,openslide
 from PIL import Image
 from uni2h_inference import prepare
-R=Path(__file__).resolve().parents[1];O=R/'results/t9/backbones';E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9/backbones')
+R=Path(__file__).resolve().parents[2];O=R/'results/t9/backbones';E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9/backbones')
 CONCH='/Users/Zhaiyue/.cache/huggingface/hub/models--MahmoodLab--conch/snapshots/f9ca9f877171a28ade80228fb195ac5d79003357/pytorch_model.bin'
 DIM={'densenet121':1024,'conch':512}
 def stamp():return datetime.datetime.now().astimezone().isoformat()

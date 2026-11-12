@@ -11,7 +11,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import roc_auc_score,cohen_kappa_score,confusion_matrix
 from sklearn.model_selection import StratifiedKFold
-R=Path(__file__).resolve().parents[1];O=R/'results/t9/pam50';C=json.loads((R/'config/t6.json').read_text())
+R=Path(__file__).resolve().parents[2];O=R/'results/t9/pam50';C=json.loads((R/'config/t6.json').read_text())
 E=Path(C['output_root']);CLASSES=C['main_PAM50'];MEANS=['E2F__mean','IFNg__mean','Hypoxia__mean','EMT__mean']
 model=joblib.load(E/'models/TCGA-BRCA_fold0.joblib');assert model['outer_fold']==0 and model['cohort']=='TCGA-BRCA'
 index=pd.read_csv(R/'results/t6/patient_mean_feature_index.csv');xall=np.load(E/'patient_mean_features.npy')

@@ -15,19 +15,19 @@ The code is a set of analysis scripts, not an installable package. Data are not 
 Data paths are set at the top of each `*_common.py` and in `config/`.
 
 ## Code
-Scripts are numbered by stage and run in order from `scripts/`.
+Scripts are numbered by stage (t3–t10) and run in numerical order. Run them from the repository root with all script folders on the path:
 
-| Stage | Scripts | Analysis |
+```bash
+export PYTHONPATH=$(ls -d "$PWD"/scripts/*/ | tr '\n' :)
+```
+
+| Folder | Scripts | Analysis |
 |---|---|---|
-| Targets | `t3b_background`, `t4_targets_discovery`, `t5_st_bulk` | Gene background; Hallmark UCell scores for ST spots and bulk RNA |
-| ST features and ST-only model | `t4_features_discovery`, `t4_models_discovery` | UNI2-h features at 128 µm per spot; ridge baseline |
-| Dual-scale model | `t6_mean_features`, `t6_fit`, `t7_fit` | Patient cross-fitted ridge over ST and bulk; λ selected on validation |
-| Whole-slide maps and features | `t7_wsi_predict`, `t6_features`, `t7_features` | Patch predictions; Moran's I, high fraction, local entropy, co-localization |
-| Clinical associations | `t6_clinical`, `t7_associations`, `t10_clinical_review`, `t10_coloc_x_e2f`, `t10_sampling_stripes` | Cox and PAM50 associations; design review; sampling-stripe check |
-| External ST | `t8_extract`, `t8_measure`, `t8_analyze`, `t10_ceiling` | HEST 10x breast sections; noise ceiling |
-| TIL | `t8_1b_analyze_til` | Co-localization vs Saltz TIL density and pattern |
-| Programme atlas, backbones, PAM50 | `t9_*`, `t9_pam50_call.R` | 58-programme atlas; CONCH, DenseNet-121, ST-Net; external PAM50 |
-| Figures | `t10_st_data`, `t10_fig1`–`t10_fig5`, `t10_supp` | Main and supplementary figures with source data |
+| `scripts/common/` | `t5_common` … `t10_common` | Shared paths, UCell, spatial statistics |
+| `scripts/model/` | `t3b_background`, `t4_*`, `t5_st_bulk`, `t6_mean_features`, `t6_fit`, `t7_fit`, `t7_wsi_predict`, `t6_features`, `t7_features` | Targets, UNI2-h spot features, ST-only and dual-scale ridge, whole-slide maps, spatial features |
+| `scripts/validation/` | `t8_extract`, `t8_measure`, `t8_analyze`, `t10_st_data`, `t10_ceiling`, `t9_atlas_*`, `t9_backbone_*`, `t9_stnet_finetune` | Held-out and HEST external ST, noise ceiling, 58-programme atlas, backbone comparison |
+| `scripts/clinical/` | `t6_clinical`, `t7_associations`, `t10_clinical_review`, `t10_coloc_x_e2f`, `t10_sampling_stripes`, `t8_1b_analyze_til`, `t9_pam50_*` | Cox and PAM50 associations, design review, sampling-stripe check, TIL, external PAM50 |
+| `scripts/figures/` | `t10_fig1`–`t10_fig5`, `t10_supp` | Main and supplementary figures with source data |
 
 ## Environments
 `env/hemorph.yml` covers all analyses. `env/smbackbone.yml` covers the backbone comparison. R 4.5.2 with genefu 2.42.0 runs the PAM50 calls (`env/R_sessionInfo.txt`). Developed on Apple silicon with PyTorch MPS.

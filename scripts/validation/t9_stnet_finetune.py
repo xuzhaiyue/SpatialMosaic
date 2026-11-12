@@ -13,7 +13,7 @@ import numpy as np,pandas as pd,h5py,torch,torchvision,openslide
 from PIL import Image
 from t9_backbone_features import busy_gpu,load_backbone
 from t9_backbone_fit import corr
-R=Path(__file__).resolve().parents[1];O=R/'results/t9/backbones/stnet_finetune';E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9/stnet')
+R=Path(__file__).resolve().parents[2];O=R/'results/t9/backbones/stnet_finetune';E=Path('/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t9/stnet')
 CFG=dict(lr=1e-6,momentum=0.9,batch=32,epochs=50,seed=20261027,pause_every=50,pause_seconds=0.2)
 MEAN=torch.tensor([.485,.456,.406]).view(1,3,1,1);STD=torch.tensor([.229,.224,.225]).view(1,3,1,1)
 def stamp():return datetime.datetime.now().astimezone().isoformat()
