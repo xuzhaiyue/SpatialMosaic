@@ -1,6 +1,6 @@
 # SpatialMosaic
 
-Analysis code for *"Dual-scale supervision turns H&E slides into calibrated virtual molecular maps and reveals a prognostic proliferation–interferon co-localization in breast cancer"*.
+Analysis code for *"Dual-scale supervision turns H&E slides into calibrated virtual molecular maps and reveals an outcome-associated proliferation–interferon co-localization in breast cancer"*.
 
 The code is a set of analysis scripts, not an installable package. Data are not included.
 
