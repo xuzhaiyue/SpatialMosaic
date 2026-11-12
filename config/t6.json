@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-27",
+  "mode": "dual_scale",
+  "seed": 20261027,
+  "programs": [
+    "E2F_TARGETS",
+    "INTERFERON_GAMMA_RESPONSE",
+    "HYPOXIA",
+    "EPITHELIAL_MESENCHYMAL_TRANSITION"
+  ],
+  "short": [
+    "E2F",
+    "IFNg",
+    "Hypoxia",
+    "EMT"
+  ],
+  "archives": [
+    {
+      "name": "CPTAC/cptac_brca.tar.gz",
+      "path": "/Volumes/INTENSO_BIG/SpatialMosaic_data/01_raw/UNI2-h-features/1fdc2c03702f410cb635de68f1f842873e9eec6f/CPTAC/cptac_brca.tar.gz",
+      "sha256": "31e243bb4b9f49eebbe81bb8c91cf00c7519a226e4771bf63421867ab85095d0",
+      "bytes": 15970613628
+    },
+    {
+      "name": "CPTAC/cptac_ccrcc.tar.gz",
+      "path": "/Volumes/INTENSO_BIG/SpatialMosaic_data/01_raw/UNI2-h-features/1fdc2c03702f410cb635de68f1f842873e9eec6f/CPTAC/cptac_ccrcc.tar.gz",
+      "sha256": "11d6835c38fc80c534d5174348fe9fac86e0858c0bc16220a6668f2dd3596ee0",
+      "bytes": 24679312380
+    },
+    {
+      "name": "TCGA/TCGA-BRCA_IDC.tar.gz",
+      "path": "/Volumes/INTENSO_BIG/SpatialMosaic_data/01_raw/UNI2-h-features/1fdc2c03702f410cb635de68f1f842873e9eec6f/TCGA/TCGA-BRCA_IDC.tar.gz",
+      "sha256": "e2592faad360153e1f490dc00060ec39ac9600ed0738659bd2da2b37c88a604d",
+      "bytes": 48727233729
+    },
+    {
+      "name": "TCGA/TCGA-BRCA_OTHERS.tar.gz",
+      "path": "/Volumes/INTENSO_BIG/SpatialMosaic_data/01_raw/UNI2-h-features/1fdc2c03702f410cb635de68f1f842873e9eec6f/TCGA/TCGA-BRCA_OTHERS.tar.gz",
+      "sha256": "d52d2af579f982fbdbf9f8f23cd2be1887dd57d245aee13cc163d6845c08fb5a",
+      "bytes": 15763733207
+    },
+    {
+      "name": "TCGA/TCGA-KIRC.tar.gz",
+      "path": "/Volumes/INTENSO_BIG/SpatialMosaic_data/01_raw/UNI2-h-features/1fdc2c03702f410cb635de68f1f842873e9eec6f/TCGA/TCGA-KIRC.tar.gz",
+      "sha256": "24c0bce928f132b863fef0010d8db3f7594db57c74738541959477d8d802990d",
+      "bytes": 30776089953
+    }
+  ],
+  "feature_inventory": "results/t2/feature_slide_patient_inventory.csv",
+  "feature_metadata": "results/t2/feature_h5_metadata_grid.jsonl",
+  "patient_metadata": "results/t2/patient_intersection.csv",
+  "T4_manifest": "results/t4/input_manifest.csv",
+  "T4_prediction_root": "/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t4/predictions",
+  "output_root": "/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t6",
+  "large_temp_root": "/Volumes/INTENSO_BIG/SpatialMosaic_data/02_derived/t5_tmp",
+  "background": "results/t3b/protein_coding_background.txt",
+  "members": "results/t3b/program_members.json",
+  "symbol_mapping": "references/2026-10-23_STPath_PathPrism/STPath/code/utils_data/symbol2ensembl.json",
+  "reference_root": "/Volumes/INTENSO/SpatialMosaic_data/03_references/tcga_endpoints_rna",
+  "threads": 2,
+  "prediction_batch": 4096,
+  "pause_seconds": 0.02,
+  "native_graph": "8-neighbor exact-coordinate differences at recorded grid step, symmetric binary; all tissue patches retained",
+  "entropy": "Cohort-wide 10 quantile bins; mean local Shannon bits over center plus existing 8 neighbors, includes zero",
+  "patient_aggregation": "Equal slide means; equal primary-RNA sample score means",
+  "cox_ridge_alpha": 0.1,
+  "logistic_C": 1.0,
+  "cv_folds": 5,
+  "clustering_k": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "kmeans_n_init": 20,
+  "main_PAM50": [
+    "Basal",
+    "Her2",
+    "LumA",
+    "LumB"
+  ],
+  "max_rank": 1500,
+  "CPTAC_bulk_column": "unstranded",
+  "display": "Within-slide average percentile color, absolute values in H5/tables; no fabricated H&E",
+  "expected_slides": 3081,
+  "expected_patches": 23404545,
+  "T5_prediction_manifest": "results/t5/wsi_prediction_manifest.csv",
+  "T5_patient_features": "results/t5/patient_spatial_clinical.csv",
+  "bulk_targets": "results/t5/bulk_UCell_by_patient.csv",
+  "outer_folds": 5,
+  "inner_folds": 3,
+  "alpha": [
+    0.01,
+    0.1,
+    1,
+    10,
+    100,
+    1000
+  ],
+  "source_total_weight_ratio": [
+    1,
+    1
+  ],
+  "source_weight_normalization": "Each source total (n_ST+n_bulk)/2; within source observations equal",
+  "clinical_folds": "Same TCGA patient folds as RNA cross-fitting; use fold-consistent maps on both clinical train/test; thresholds train only",
+  "baseline_comparison": "T5 saved predictions, re-evaluated on same T6 outer folds and train-only thresholds; original T5 unchanged",
+  "fit_method": "Float64 weighted Ridge normal equations from source sufficient statistics; shared input affine, independent source target standardization; alpha grid identical to T4",
+  "expression_prediction_batch": 4096,
+  "baseline_T4_models": {
+    "He2020": {
+      "path": "/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t4/models/He2020_UNI2h_discovery.joblib",
+      "sha256": "0229277c60d2a7f2b7c6d967982ccd00014b4ad2fb4a7f6452a299000ebaa6a8"
+    },
+    "Meylan_ccRCC": {
+      "path": "/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t4/models/Meylan_ccRCC_UNI2h_discovery.joblib",
+      "sha256": "4a64a5ede36d6f23d59c4c84167f5f996f42c83454897b93cf7138a233ea9cda"
+    }
+  },
+  "models": "results/t6/model_registry.json"
+}

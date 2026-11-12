@@ -1,0 +1,68 @@
+{
+  "date": "2026-10-26",
+  "programs": [
+    "E2F_TARGETS",
+    "INTERFERON_GAMMA_RESPONSE",
+    "HYPOXIA",
+    "EPITHELIAL_MESENCHYMAL_TRANSITION"
+  ],
+  "background": "results/t3b/protein_coding_background.txt",
+  "members": "results/t3b/program_members.json",
+  "input_manifest": "results/t4/input_manifest.csv",
+  "large_output": "/Volumes/INTENSO/SpatialMosaic_data/02_derived/project_large_artifacts/t4",
+  "weights": "/Users/Zhaiyue/.cache/huggingface/hub/models--MahmoodLab--UNI2-h/snapshots/d517a8dd47902dd7c308b3c36f63bce47e7b9a43/pytorch_model.bin",
+  "feature_dim": 1536,
+  "field_um": 128.0,
+  "interpolation": "pil_bicubic",
+  "input_resize": 256,
+  "encoder_resize": 224,
+  "encoder_interpolation": "bilinear",
+  "precision": "bfloat16",
+  "batch_size": 4,
+  "pause_seconds": 1.0,
+  "cpu_threads": 2,
+  "alpha": [
+    0.01,
+    0.1,
+    1,
+    10,
+    100,
+    1000
+  ],
+  "seed_split": 20261023,
+  "max_rank": 1500,
+  "coverage": "HSV saturation>0.05 AND value<0.98, on 256px patch; report only, never exclude",
+  "edge_rule": "round(center-size/2); pad out-of-image with white; report in-image fraction; no spot deletion",
+  "selection": "Mean within-section Spearman, then equal section average within patient, then equal validation-patient average; tie atol1e-12 selects larger alpha; all-NA picks largest and records reason",
+  "training": "UNI2h only. StandardScaler fit train for validation; independent Ridge targets; selected alpha refit train+val. No PCA. Spot-weighted fits; patient-weighted validation.",
+  "undefined": "Constant vectors or fewer than 3 finite spots => correlation NA; retain counts and reasons; no spot exclusions; metric finite pairs only for numerical failures explicitly counted",
+  "evaluation": "Single locked-model prediction pass over all sections. Test and HER2ST Spearman evaluated once; train/val maps labeled fitted display, not held-out performance.",
+  "mode": "discovery_2026-10-26",
+  "model_inputs": [
+    "UNI2h"
+  ],
+  "summary": "Per-section Spearman, equal-section patient mean, cohort patient median; all patients and four programs, negatives and NA retained. No color baseline, residual sensitivity, reliability ceiling, paired comparison, significance test or wording threshold.",
+  "figures": {
+    "reference": "docs/FIGURE_PLAN.md",
+    "representative_sample": "SPA87",
+    "map_color_limits": "Observed and predicted panels each independently use within-section average-tie percentile ranks, 100*rank/n, with shared 0\u2013100 colorbar. Absolute observed/predicted values stay unchanged in tables and arrays.",
+    "gallery": {
+      "high_per_program": 50,
+      "low_per_program": 50,
+      "per_cancer_each_tail": 25,
+      "eligible_splits": [
+        "test",
+        "external"
+      ],
+      "selection": "Per-patient predicted extremes, round-robin across patients; take best remaining candidate score among patient fronts within each round. No observed-RNA selection. Stable ties by sample and spot_id.",
+      "patch_image_pixels": 256,
+      "eligibility": {
+        "fully_inside_image": true,
+        "in_image_fraction_equals": 1.0,
+        "tissue_coverage_min": 0.5,
+        "scope": "Gallery selection only, after inference. Training, validation, held-out metrics and spatial maps use all spots. Never relax display eligibility to fill a gallery."
+      }
+    },
+    "colocalization": "All six pairs. Within-section predicted average percentile rank per program; joint-high=min(rank_A,rank_B) mapped at measured spots. Predicted Spearman matrix per section. Cohort summaries only test/external, sections averaged within patient."
+  }
+}
