@@ -1,6 +1,6 @@
 # SpatialMosaic
 
-Analysis code for *"Dual-scale supervision turns H&E slides into calibrated virtual molecular maps and reveals an outcome-associated proliferation–interferon co-localization in breast cancer"*.
+Analysis code for *"Dual-scale supervision calibrates H&E virtual molecular maps and reveals outcome-associated proliferation–interferon co-localization in breast cancer"*.
 
 The code is a set of analysis scripts, not an installable package. Data are not included.
 
@@ -8,7 +8,9 @@ The code is a set of analysis scripts, not an installable package. Data are not 
 | Input | Source |
 |---|---|
 | Spatial transcriptomics (He2020, HER2ST A–D, Meylan ccRCC, 10x breast) | HEST-1k |
-| Bulk RNA-seq, clinical data, diagnostic slides | TCGA-BRCA, TCGA-KIRC (GDC); CPTAC-BRCA, CPTAC-CCRCC (PDC / TCIA) |
+| Bulk RNA-seq and PAM50 calls | TCGA-BRCA, TCGA-KIRC (UCSC Xena TCGA hub); CPTAC-BRCA, CPTAC-CCRCC (GDC) |
+| Clinical data | TCGA Pan-Cancer Clinical Data Resource (GDC publication page) |
+| Diagnostic slides (thumbnails) | TCGA (GDC); CPTAC (TCIA) |
 | Patch features | Public UNI2-h features (MahmoodLab) |
 | TIL maps | Saltz et al. 2018 (GDC publication page) |
 
