@@ -6,7 +6,7 @@ from pathlib import Path
 import numpy as np,pandas as pd,h5py,torch,openslide
 from PIL import Image
 from uni2h_inference import load_encoder,prepare
-from t4_display_provenance import allowed_hashes
+from t4_display_provenance import allowed_hashes,plan_bytes
 R=Path(__file__).resolve().parents[2];W=R/'docs/worklog/2026-10-26_T4';O=R/'results/t4'
 def stamp():return datetime.datetime.now().astimezone().isoformat()
 def gpu_snapshot():
@@ -20,7 +20,7 @@ def gpu_snapshot():
  return rows
 
 def main():
- cfg=json.loads((R/'config/t4_frozen.json').read_text());plan=(R/'PLAN.md').read_bytes();assert plan.splitlines()[0]==b'status: frozen_2026-10-26';plan_sha=hashlib.sha256(plan).hexdigest();cfg_sha=hashlib.sha256((R/'config/t4_frozen.json').read_bytes()).hexdigest();meta=pd.read_csv(R/cfg['input_manifest']);torch.set_num_threads(2);allowed_plans,allowed_configs=allowed_hashes()
+ cfg=json.loads((R/'config/t4_frozen.json').read_text());plan=plan_bytes();assert plan is None or plan.splitlines()[0]==b'status: frozen_2026-10-26';plan_sha=hashlib.sha256(plan).hexdigest() if plan else '';cfg_sha=hashlib.sha256((R/'config/t4_frozen.json').read_bytes()).hexdigest();meta=pd.read_csv(R/cfg['input_manifest']);torch.set_num_threads(2);allowed_plans,allowed_configs=allowed_hashes()
  lock=open('/tmp/zhaiyue_spatialmosaic_mps.lock','w');fcntl.flock(lock,fcntl.LOCK_EX)
  while True:
   snapshot=gpu_snapshot();active=[x for x in snapshot if any('cellvit' in n.lower() for n in x['scripts']) or x['cpu']>1]
@@ -47,7 +47,7 @@ def main():
     f.attrs.update(config_sha256=cfg_sha,plan_sha256=plan_sha,image=row.image,mpp=row.mpp,crop_pixels=size,device=device,precision=cfg['precision'])
     f.create_dataset('features',(len(ids),1536),dtype='float32');f.create_dataset('done',data=np.zeros(len(ids),dtype=bool));f.create_dataset('spot_ids',data=np.asarray(ids,dtype=object),dtype=h5py.string_dtype());f.create_dataset('coordinates',data=xy);f.create_dataset('tissue_coverage',(len(ids),),dtype='float32');f.create_dataset('in_image_fraction',(len(ids),),dtype='float32')
    else:
-    assert f.attrs['config_sha256'] in allowed_configs and f.attrs['plan_sha256'] in allowed_plans;assert np.array_equal(f['spot_ids'].asstr()[:],ids);assert np.array_equal(f['coordinates'][:],xy)
+    assert allowed_plans is None or (f.attrs['config_sha256'] in allowed_configs and f.attrs['plan_sha256'] in allowed_plans);assert np.array_equal(f['spot_ids'].asstr()[:],ids);assert np.array_equal(f['coordinates'][:],xy)
    for start in range(0,len(ids),cfg['batch_size']):
     ix=[i for i in range(start,min(len(ids),start+cfg['batch_size'])) if not f['done'][i]]
     if not ix:continue

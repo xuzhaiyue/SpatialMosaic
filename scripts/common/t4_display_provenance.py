@@ -1,8 +1,12 @@
 """Provenance hashes of the analysis plan and configuration (checked against the authors' recorded files)."""
 from pathlib import Path
 import hashlib,json
-R=Path(__file__).resolve().parents[2]
+R=Path(__file__).resolve().parents[2];PLAN=R/'PLAN.md'
+def plan_bytes():
+ """The authors' analysis plan is not distributed with the code; without it the provenance checks are skipped."""
+ return PLAN.read_bytes() if PLAN.exists() else None
 def allowed_hashes():
+ if not PLAN.exists():return None,None
  path=R/'docs/worklog/2026-10-26_T4/display_A1/amendment.json'
  if not path.exists():
   plan=hashlib.sha256((R/'PLAN.md').read_bytes()).hexdigest();assert plan==(R/'docs/worklog/2026-10-26_T3b/FROZEN_PLAN.sha256').read_text().split()[0];return [plan],[hashlib.sha256((R/'config/t4_frozen.json').read_bytes()).hexdigest()]

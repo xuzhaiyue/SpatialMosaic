@@ -8,7 +8,7 @@ from scipy import sparse
 from scipy.stats import rankdata
 R=Path(__file__).resolve().parents[2]
 def main():
- c=json.loads((R/'config/t4_frozen.json').read_text());assert (R/'PLAN.md').read_text().startswith('status: frozen_2026-10-26');bg=(R/c['background']).read_text().splitlines();bsha=hashlib.sha256((R/c['background']).read_bytes()).hexdigest();members=json.loads((R/c['members']).read_text());mapping=json.loads((R/'references/2026-10-23_STPath_PathPrism/STPath/code/utils_data/symbol2ensembl.json').read_text());manifest=pd.read_csv(R/c['input_manifest']);bgindex={g:i for i,g in enumerate(bg)};union=sorted({g for p in c['programs'] for g in members[p]});uix={g:i for i,g in enumerate(union)};groups={p:[uix[g] for g in members[p]] for p in c['programs']};completed=0
+ c=json.loads((R/'config/t4_frozen.json').read_text());assert not (R/'PLAN.md').exists() or (R/'PLAN.md').read_text().startswith('status: frozen_2026-10-26');bg=(R/c['background']).read_text().splitlines();bsha=hashlib.sha256((R/c['background']).read_bytes()).hexdigest();members=json.loads((R/c['members']).read_text());mapping=json.loads((R/'references/2026-10-23_STPath_PathPrism/STPath/code/utils_data/symbol2ensembl.json').read_text());manifest=pd.read_csv(R/c['input_manifest']);bgindex={g:i for i,g in enumerate(bg)};union=sorted({g for p in c['programs'] for g in members[p]});uix={g:i for i,g in enumerate(union)};groups={p:[uix[g] for g in members[p]] for p in c['programs']};completed=0
  for row in manifest.itertuples():
   dest=Path(row.targets)
   if dest.exists():

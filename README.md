@@ -14,6 +14,20 @@ The code is a set of analysis scripts, not an installable package. Data are not 
 
 Data paths are set at the top of each `*_common.py` and in `config/`.
 
+## Inputs
+`inputs/` holds the small frozen inputs derived from the public sources above, laid out at the paths the scripts read: the HEST section manifest, slide–patient inventories and patient table, the CPTAC RNA sample manifest, the 9,036-gene protein-coding scoring background and programme gene members, and the download manifests (source URLs and checksums). Copy them into the repository root before running:
+
+```bash
+cp -R inputs/. .
+```
+
+Two third-party files are not redistributed and should be placed under `references/`:
+
+| Path | Source |
+|---|---|
+| `references/gene_sets/msigdb_2026.2.Hs/h.all.v2026.2.Hs.symbols.gmt` | MSigDB Hallmark, release 2026.2.Hs |
+| `references/2026-10-23_STPath_PathPrism/STPath/code/utils_data/symbol2ensembl.json` | `utils_data/symbol2ensembl.json` from github.com/Graph-and-Geometric-Learning/STPath, commit 3b10e6d |
+
 ## Code
 Scripts are numbered by stage (t3–t10) and run in numerical order. Run them from the repository root with all script folders on the path:
 
@@ -32,7 +46,7 @@ export PYTHONPATH=$(ls -d "$PWD"/scripts/*/ | tr '\n' :)
 ## Environments
 `env/hemorph.yml` covers all analyses. `env/smbackbone.yml` covers the backbone comparison. R 4.5.2 with genefu 2.42.0 runs the PAM50 calls (`env/R_sessionInfo.txt`). Developed on Apple silicon with PyTorch MPS.
 
-The T4 feature and model scripts verify SHA-256 hashes of the authors' analysis plan and configuration (`common/t4_display_provenance.py`); when re-running from scratch, record new hashes or skip this check.
+The T4 feature and model scripts verify SHA-256 hashes of the authors' analysis plan and configuration (`common/t4_display_provenance.py`). The plan itself is not distributed; when `PLAN.md` is absent these checks are skipped.
 
 ## Licence
 CC0 1.0 Universal.
